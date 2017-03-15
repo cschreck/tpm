@@ -1,0 +1,10 @@
+#pycharm
+.idea/
+
+#egg
+tpm.egg-info/
+
+#compiled
+*.pyc
+tpm/__pycache__/
+
