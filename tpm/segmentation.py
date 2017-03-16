@@ -31,8 +31,19 @@ def split_by_time(trajectory, split_delta=timedelta(hours=2)):
 def split_by_staypoint(trajectory):
     assert trajectory.staypoints is not None
     trajectories = list()
-    
+    splits = list()
+    for key in trajectory.staypoints:
+        points = trajectory.staypoints[key]
+        splits.append(points[int(len(points) / 2)])
 
+    prev_split = 0
+    for split in splits:
+        trajectories.append(Trajectory(trajectory.points[prev_split:split]))
+        prev_split = split
+
+    trajectories.append(Trajectory(trajectory.points[prev_split:]))
+
+    return trajectories
 
 
 

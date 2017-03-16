@@ -7,6 +7,7 @@ import numpy as np
 
 def read_geolife(subject_dir):
     files = os.listdir(subject_dir)
+    files = sorted(files)
     trajectories = []
     for file in files:
         file_path = os.path.join(subject_dir, file)

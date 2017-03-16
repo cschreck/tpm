@@ -31,33 +31,46 @@ def median_filter(trajectory, window_size=5):
 
 def distance_duplication_filter(trajectory, distance_threshold=1):
     trajectory = deepcopy(trajectory)
-    for i in range(0, len(trajectory) - 1, -1):
+    idxs = list()
+    for i in range(len(trajectory) - 1):
         if haversine_distance(trajectory[i], trajectory[i + 1]) < distance_threshold:
-            del trajectory.points[i + 1]
+            idxs.append(i + 1)
+
+    for i in reversed(idxs):
+        del trajectory.points[i]
 
     return trajectory
 
 
 def time_duplication_filter(trajectory, time_threshold=timedelta(seconds=1)):
     trajectory = deepcopy(trajectory)
-    for i in range(0, len(trajectory) - 1, -1):
+    idxs = list()
+    for i in range(len(trajectory) - 1):
         if trajectory[i + 1].datetime - trajectory[i].datetime < time_threshold:
-            del trajectory.points[i + 1]
+            idxs.append(i + 1)
+
+    for i in reversed(idxs):
+        del trajectory.points[i]
 
     return trajectory
 
 
 def speed_filter_abs(trajectory, speed_threshold=70, in_kmh=False):
     trajectory = deepcopy(trajectory)
-    for i in range(0, len(trajectory) - 1, -1):
+    idxs = list()
+    if in_kmh:
+        speed_threshold /= 3.6
+
+    for i in range(len(trajectory) - 1):
         dist_diff = haversine_distance(trajectory[i], trajectory[i + 1])
         time_diff = trajectory[i + 1].datetime - trajectory[i].datetime
         speed = dist_diff / time_diff.total_seconds()
-        if in_kmh:
-            speed *= 3.6
 
         if speed > speed_threshold:
-            del trajectory.points[i + 1]
+            idxs.append(i + 1)
+
+    for i in reversed(idxs):
+        del trajectory.points[i]
 
     return trajectory
 
