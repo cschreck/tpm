@@ -1,5 +1,6 @@
 import os
 from dateutil import parser
+from datetime import timedelta
 
 from tpm.data_model import Point, Trajectory
 
@@ -15,7 +16,8 @@ def read_geolife(subject_dir):
             points = []
             for line in f.readlines()[6:]:
                 lat, lon, _, _, _, date, time = line.split(',')
-                point = Point(np.float32(lat), np.float32(lon), datetime=parser.parse("{} {}".format(date, time)))
+                datetime = parser.parse("{} {}".format(date, time)) + timedelta(hours=9)
+                point = Point(np.float32(lat), np.float32(lon), datetime=datetime)
                 points.append(point)
 
             trajectories.append(Trajectory(points))

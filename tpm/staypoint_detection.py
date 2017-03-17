@@ -5,12 +5,17 @@ from collections import Counter
 import copy
 
 
-def density_based_staypoint_detection(trajectory, window_size=20, lookforward=3):
+def density_based_staypoint_detection(trajectory, window_size=20, lookforward=3, **kwargs):
     trajectory = copy.deepcopy(trajectory)
     mask = list()
+    dbscan_eps = kwargs.get('dbscan_eps', 4)
+    dbscan_min_samples = kwargs.get('dbscan_min_samples', 20)
+    if dbscan_min_samples > window_size*2:
+        raise ValueError("Dbscan minsamples cannot be greater than window_size*2")
+
     for i in range(window_size, len(trajectory) - window_size):
         pdist_matrix = calc_pdist_matrix(trajectory[i - window_size: i + window_size])
-        clusters = dbscan(pdist_matrix, eps=4, min_samples=20, metric='precomputed')[1]
+        clusters = dbscan(pdist_matrix, eps=dbscan_eps, min_samples=dbscan_min_samples, metric='precomputed')[1]
         if not Counter(clusters)[-1] == window_size * 2:
             mask.append(True)
         else:

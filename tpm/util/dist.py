@@ -19,9 +19,11 @@ def haversine_distance(p1, p2):
     lon_rad2 = radians(p2.lon)
     return 2*R * asin(sqrt(sin((lat_rad2-lat_rad1)/2)**2 + cos(lat_rad1)*cos(lat_rad2)*(sin((lon_rad2-lon_rad1)/2)**2)))
 
+
 def fast_haversine_distance(p1,p2):
     dist = haversine.pairwise([p1, p2])[0][1]
     return R * dist
+
 
 def calc_pdist_matrix(trajectory):
     locations = Trajectory.convert_locations_in_rad(trajectory)
