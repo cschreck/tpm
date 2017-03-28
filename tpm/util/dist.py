@@ -3,6 +3,8 @@ from math import asin
 from math import cos
 from math import radians
 from math import sqrt
+from math import atan2
+from math import degrees
 from tpm.data_model import R
 from tpm.data_model import Trajectory
 from sklearn.neighbors import DistanceMetric
@@ -45,3 +47,16 @@ def blocked_pdist_matrix(trajectory, window_size=15):
             dist[i][j] = fast_haversine_distance(p1, p2)
 
     return dist
+
+
+def calc_heading(p1, p2):
+    lat1 = radians(p1.lat)
+    lon1 = radians(p1.lon)
+    lat2 = radians(p2.lat)
+    lon2 = radians(p2.lon)
+
+    bearing = atan2(cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(lon2 - lon1), sin(lon2 - lon1) * cos(lat2))
+    bearing = degrees(bearing)
+    bearing = (bearing + 360) % 360
+
+    return bearing

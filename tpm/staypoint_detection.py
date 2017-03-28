@@ -28,10 +28,11 @@ def density_based_staypoint_detection(trajectory, window_size=20, lookforward=3,
     clusters = defaultdict(list)
     cluster_id = 0
     clustered_idxs = [i for i, val in enumerate(mask) if val]
+
     for i, j in zip(clustered_idxs[:len(clustered_idxs) - 1], clustered_idxs[1:len(clustered_idxs)]):
+        clusters[cluster_id].append(i)
         if j - i > lookforward:
             cluster_id += 1
-        clusters[cluster_id].append(i)
 
     trajectory.staypoints = dict(clusters)
     return trajectory
