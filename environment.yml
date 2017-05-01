@@ -1,0 +1,5 @@
+name: tpm
+channels: !!python/tuple
+- defaults
+prefix: /home/christian/PycharmProjects/tpm/tpm
+

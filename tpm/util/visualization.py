@@ -44,3 +44,5 @@ def visualize_start_end_trajectories(trajectories):
         map_osm.add_children(marker)
 
     return map_osm
+
+
